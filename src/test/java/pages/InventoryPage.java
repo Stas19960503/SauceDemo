@@ -2,31 +2,44 @@ package pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
-public class InventoryPage {
-    private WebDriver driver;
-    private By firstItemName = By.cssSelector(".inventory_item_name");
-    private By firstItemPrice = By.cssSelector(".inventory_item_price");
-    private By firstAddToCartButton = By.cssSelector(".btn_inventory");
+import java.util.List;
+
+public class InventoryPage extends BasePage {
+
     private By cartIcon = By.className("shopping_cart_link");
+    private By cartBadge = By.className("shopping_cart_badge");
+    private By allItemNames = By.className("inventory_item_name");
 
     public InventoryPage(WebDriver driver) {
-        this.driver = driver;
+        super(driver);
     }
 
-    public String getFirstItemName() {
-        return driver.findElement(firstItemName).getText();
+    public List<String> getAllItemNames() {
+        return driver.findElements(allItemNames)
+                .stream()
+                .map(WebElement::getText)
+                .toList();
     }
 
-    public String getFirstItemPrice() {
-        return driver.findElement(firstItemPrice).getText();
+    private By getAddToCartButton(String itemName) {
+        String formattedName = itemName.toLowerCase().replace(" ", "-");
+        return By.id("add-to-cart-" + formattedName);
     }
 
-    public void addFirstItemToCart() {
-        driver.findElement(firstAddToCartButton).click();
+    public void addItemToCart(String itemName) {
+        click(getAddToCartButton(itemName));
+    }
+
+    public String getItemPriceByName(String itemName) {
+        By priceLocator = By.xpath(String.format(
+                "//div[contains(@class, 'inventory_item')][.//div[text()='%s']]//div[@class='inventory_item_price']",
+                itemName));
+        return getText(priceLocator);
     }
 
     public void goToCart() {
-        driver.findElement(cartIcon).click();
+        click(cartIcon);
     }
 }

@@ -8,13 +8,11 @@ import static org.testng.Assert.assertTrue;
 public class AuthPageTest extends BaseTest {
 
     @Test
-    public void testSuccessfulLogin() throws InterruptedException {
+    public void testSuccessfulLogin() {
         driver.get("https://www.saucedemo.com/");
         AuthPage authPage = new AuthPage(driver);
 
         authPage.login("standard_user", "secret_sauce");
-
-        Thread.sleep(1000); // Пауза, чтобы страница успела загрузиться
 
         assertTrue(driver.getCurrentUrl().contains("inventory.html"),
                 "Не удалось войти в систему!");
