@@ -14,7 +14,7 @@ public abstract class BasePage {
 
     public BasePage(WebDriver driver) {
         this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(4));
     }
 
     protected void click(By locator) {
@@ -29,14 +29,6 @@ public abstract class BasePage {
 
     protected String getText(By locator) {
         return wait.until(ExpectedConditions.visibilityOfElementLocated(locator)).getText();
-    }
-
-    protected boolean isDisplayed(By locator) {
-        try {
-            return wait.until(ExpectedConditions.visibilityOfElementLocated(locator)).isDisplayed();
-        } catch (Exception e) {
-            return false;
-        }
     }
 
     protected void waitForUrlContains(String urlPart) {

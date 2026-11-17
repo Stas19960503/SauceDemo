@@ -1,5 +1,6 @@
 package tests;
 
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import pages.AuthPage;
 
@@ -7,10 +8,16 @@ import static org.testng.Assert.assertTrue;
 
 public class AuthPageTest extends BaseTest {
 
+    private AuthPage authPage;
+
+    @BeforeMethod
+    public void initPage() {
+       authPage = new AuthPage(driver);
+    }
+
     @Test
     public void testSuccessfulLogin() {
         driver.get("https://www.saucedemo.com/");
-        AuthPage authPage = new AuthPage(driver);
 
         authPage.login("standard_user", "secret_sauce");
 
@@ -21,7 +28,6 @@ public class AuthPageTest extends BaseTest {
     @Test
     public void testInvalidLogin() {
         driver.get("https://www.saucedemo.com/");
-        AuthPage authPage = new AuthPage(driver);
 
         authPage.login("standard_user", "wrong_password");
 
@@ -33,7 +39,6 @@ public class AuthPageTest extends BaseTest {
     @Test
     public void testLockedOutUser() {
         driver.get("https://www.saucedemo.com/");
-        AuthPage authPage = new AuthPage(driver);
 
         authPage.login("locked_out_user", "secret_sauce");
 
@@ -45,7 +50,6 @@ public class AuthPageTest extends BaseTest {
     @Test
     public void testEmptyFieldsLogin() {
         driver.get("https://www.saucedemo.com/");
-        AuthPage authPage = new AuthPage(driver);
 
         authPage.clickLoginButton();
 
